@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>NEON TUNER — Chromatic Guitar &amp; Bass Tuner</title>
+  <meta name="description" content="A bling neon-cyberpunk chromatic tuner for guitar and bass. Listens through your mic and shows the note, frequency and how in-tune you are." />
+
+  <!-- PWA -->
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <meta name="theme-color" content="#070a12" />
+  <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="./icon.svg" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="mobile-web-app-capable" content="yes" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="scanlines" aria-hidden="true"></div>
+  <div class="grid-bg" aria-hidden="true"></div>
+
+  <main class="app" id="app">
+    <header class="topbar">
+      <h1 class="logo">NEON<span>TUNER</span></h1>
+      <div class="instrument-toggle" id="instrumentToggle" role="tablist" aria-label="Instrument">
+        <button class="seg active" data-instrument="guitar" role="tab" aria-selected="true">GUITAR</button>
+        <button class="seg" data-instrument="bass" role="tab" aria-selected="false">BASS</button>
+      </div>
+    </header>
+
+    <!-- Main tuner readout + gauge -->
+    <section class="hero">
+      <canvas id="gaugeCanvas" class="gauge"></canvas>
+      <div class="readout" id="readout">
+        <div class="note-line">
+          <span class="note" id="noteName">–</span><sup class="octave" id="noteOctave"></sup>
+        </div>
+        <div class="cents-line"><span id="centsValue">··</span><span class="unit">cents</span></div>
+        <div class="freq-line"><span id="freqValue">0.0</span><span class="unit">Hz</span></div>
+      </div>
+      <div class="flat-sharp">
+        <span class="fs flat">♭ FLAT</span>
+        <span class="fs sharp">SHARP ♯</span>
+      </div>
+    </section>
+
+    <!-- Cents LED strip -->
+    <section class="panel cents-panel">
+      <div class="led-strip" id="ledStrip" aria-hidden="true"></div>
+    </section>
+
+    <!-- Strobe ribbon -->
+    <section class="panel strobe-panel">
+      <span class="panel-label">STROBE</span>
+      <canvas id="strobeCanvas" class="strobe"></canvas>
+    </section>
+
+    <!-- Bottom widgets -->
+    <section class="bottom">
+      <div class="panel amp-panel">
+        <span class="panel-label">INPUT</span>
+        <div class="amp-meter"><div class="amp-fill" id="ampFill"></div></div>
+        <div class="amp-db"><span id="dbValue">-∞</span> dB</div>
+      </div>
+
+      <div class="panel history-panel">
+        <span class="panel-label">PITCH HISTORY</span>
+        <canvas id="historyCanvas" class="history"></canvas>
+      </div>
+    </section>
+
+    <!-- String guide -->
+    <section class="panel strings-panel">
+      <div class="strings" id="stringGuide"></div>
+    </section>
+
+    <!-- Controls -->
+    <footer class="controls">
+      <div class="a4">
+        <button class="step" id="a4Down" aria-label="Lower reference pitch">−</button>
+        <div class="a4-readout"><span class="a4-label">A4</span><span id="a4Value">440</span><span class="a4-hz">Hz</span></div>
+        <button class="step" id="a4Up" aria-label="Raise reference pitch">+</button>
+      </div>
+      <div class="status" id="status">Tap START and allow the mic</div>
+    </footer>
+  </main>
+
+  <!-- Start overlay (needed for mic + audio gesture) -->
+  <div class="overlay" id="startOverlay">
+    <div class="overlay-card">
+      <div class="overlay-icon">
+        <svg viewBox="0 0 64 64" width="84" height="84" aria-hidden="true">
+          <defs>
+            <linearGradient id="fg" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#818cf8"/>
+            </linearGradient>
+          </defs>
+          <path d="M22 8v22a10 10 0 0 0 20 0V8" fill="none" stroke="url(#fg)" stroke-width="5" stroke-linecap="round"/>
+          <path d="M32 40v16" fill="none" stroke="url(#fg)" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="32" cy="58" r="3.5" fill="url(#fg)"/>
+        </svg>
+      </div>
+      <h2>NEON TUNER</h2>
+      <p>Chromatic tuner for guitar &amp; bass.<br/>Allow microphone access to begin.</p>
+      <button class="start-btn" id="startBtn">START</button>
+      <p class="overlay-note">Works best with a clean signal. Use headphones to avoid feedback.</p>
+    </div>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>

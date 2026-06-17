@@ -1,0 +1,20 @@
+{
+  "name": "Neon Tuner — Chromatic Guitar & Bass Tuner",
+  "short_name": "Neon Tuner",
+  "description": "A bling neon-cyberpunk chromatic tuner for guitar and bass. Uses your mic to detect the note, frequency and how in-tune you are.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#070a12",
+  "theme_color": "#070a12",
+  "categories": ["music", "utilities"],
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
